@@ -1,0 +1,79 @@
+-- โหลด Fluent UI Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+-- สร้างหน้าต่างหลัก (Main Window)
+local Window = Fluent:CreateWindow({
+    Title = "HUB NAME",
+    SubTitle = "BEST EGG SYSTEM",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(500, 320),
+    Theme = "Dark", -- โทนสีมืดตามรูปตัวอย่าง
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+-- สร้างแท็บเมนูหลัก
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main System", Icon = "rbxassetid://10723415903" })
+}
+
+-- เพิ่มปุ่มไอคอน Discord ทางด้านบนขวาของ Window
+Window:AddButton({
+    Title = "Discord Community",
+    Description = "คลิกเพื่อก๊อปปี้ลิงก์ Discord",
+    Callback = function()
+        setclipboard("https://discord.gg/your-link") -- ใส่ลิงก์ Discord ของคุณที่นี่
+        Fluent:Notify({
+            Title = "Discord",
+            Content = "ก๊อปปี้ลิงก์ Discord เรียบร้อยแล้ว!",
+            Duration = 3
+        })
+    end
+})
+
+-- สร้าง Section แสดงตัวเลือกไข่ (BEST EGG)
+local EggSection = Tabs.Main:AddSection("BEST EGG")
+
+local EggDropdown = Tabs.Main:AddDropdown("EggSelect", {
+    Title = "BEST EGG",
+    Description = "เลือกชนิดไข่ที่ต้องการ",
+    Values = {"Rhinotaur", "Dragon", "Phoenix", "Demon"},
+    Default = "Rhinotaur",
+    Callback = function(Value)
+        print("เลือกไข่ประเภท:", Value)
+    end
+})
+
+-- สร้าง Section ระบบออโต้ (TELEGUIADO / LOOP)
+local LoopSection = Tabs.Main:AddSection("TELEGUIADO")
+
+local LoopToggle = Tabs.Main:AddToggle("LoopActive", {
+    Title = "LOOP ACTIVE",
+    Default = false,
+    Callback = function(Value)
+        _G.LoopStatus = Value
+        if Value then
+            Fluent:Notify({
+                Title = "System Status",
+                Content = "เริ่มทำงานระบบ Loop Active",
+                Duration = 2
+            })
+            -- ใส่โค้ดการทำงานวนลูปตรงนี้
+            task.spawn(function()
+                while _G.LoopStatus do
+                    task.wait(1)
+                    -- ตัวอย่างฟังก์ชันทำงาน
+                end
+            end)
+        else
+            Fluent:Notify({
+                Title = "System Status",
+                Content = "ปิดการทำงานระบบ Loop Active",
+                Duration = 2
+            })
+        end
+    end
+})
+
+-- เลือกแท็บแรกให้แสดงผลเริ่มต้น
+Window:SelectTab(1)
+
